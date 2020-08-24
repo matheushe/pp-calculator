@@ -1,0 +1,7 @@
+{
+  "name": "cpk_calculator",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
