@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "cpk_calculator",
+  "appName": "Calculadora PP",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
