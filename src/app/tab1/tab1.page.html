@@ -34,17 +34,17 @@
               </ion-row>
 
               <ion-row>
-                <ion-col size="6">
+                <ion-col size="4">
                   <ion-item>
                     <ion-label position="floating">l.Min</ion-label>
                     <ion-input type="number" [(ngModel)]="carac.lmin"></ion-input>
                   </ion-item>
                 </ion-col>
 
-                <ion-col size="6">
+                <ion-col size="4">
                   <ion-item>
                     <ion-label position="floating">l.Max</ion-label>
-                    <ion-input type="text" [(ngModel)]="carac.lmax"></ion-input>
+                    <ion-input type="number" [(ngModel)]="carac.lmax"></ion-input>
                   </ion-item>
                 </ion-col>
               </ion-row>
@@ -57,11 +57,11 @@
                   </ion-item>
                 </ion-col>
 
-                <!-- <ion-col size="2">
+                <ion-col size="2">
                   <ion-button color="danger" fill="outline" size="small" (click)="removeObtido(nP, cP, oP)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-button>
-                </ion-col> -->
+                </ion-col>
 
               </ion-row>
 
@@ -72,12 +72,58 @@
               <ion-button (click)="calcula(nP,cP)" expand="full" color="success">
                 Calcular
               </ion-button>
-
             </div>
-
           </ion-grid>
         </ion-list>
 
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="result.resultado">
+      <ion-card-header>
+        <ion-card-subtitle>Resultado</ion-card-subtitle>
+        <ion-card-title>PP / PPK</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <div>
+          <ion-grid fixed>
+
+            <ion-row color="primary">
+              <ion-col size="8">PP</ion-col>
+              <ion-col size="4">{{result.dados.pp}}</ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="8">PP Min</ion-col>
+              <ion-col size="4">{{result.dados.ppmin}}</ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="8">PP Max</ion-col>
+              <ion-col size="4">{{result.dados.ppmax}}</ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="8">PPK</ion-col>
+              <ion-col size="4">{{result.dados.ppk}}</ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="8">Média Valores Obtidos</ion-col>
+              <ion-col size="4">{{result.dados.mediaObtidos}}</ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="8">Desvio Padrão</ion-col>
+              <ion-col size="4">{{result.dados.desvio}}</ion-col>
+            </ion-row>
+
+            
+          </ion-grid>
+        </div>
+        
+        
       </ion-card-content>
     </ion-card>
   </div>
