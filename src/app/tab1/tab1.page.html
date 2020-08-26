@@ -1,17 +1,91 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Calculadora
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<div class="ion-text-center" *ngIf="pecas.length <= 0">
+  <h2>Nenhuma peça cadastrada.</h2>
+  <h4>Clique no botão de mais e adicione ume peça para inciar o processo de calculos do CP, CPK,PP e PPK</h4>
+</div>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div *ngFor="let peca of pecas; index as nP">   
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{nP + 1}} - {{peca.peca}}</ion-card-title>
+        <ion-card-subtitle>Informe as características</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-grid fixed>
+
+            <div *ngFor="let carac of peca.carac; index as cP">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-label position="floating">Característica N {{cP +1}}</ion-label>
+                    <ion-input type="text" [(ngModel)]="carac.desc"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-label position="floating">l.Min</ion-label>
+                    <ion-input type="number" [(ngModel)]="carac.lmin"></ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-label position="floating">l.Max</ion-label>
+                    <ion-input type="text" [(ngModel)]="carac.lmax"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
+              <ion-row *ngFor="let obtido of carac.obtido; index as oP" class="ion-align-items-center">
+                <ion-col size="10">
+                  <ion-item>
+                    <ion-label position="floating">Obtido</ion-label>
+                    <ion-input type="number" [(ngModel)]="obtido.valor"></ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <!-- <ion-col size="2">
+                  <ion-button color="danger" fill="outline" size="small" (click)="removeObtido(nP, cP, oP)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </ion-col> -->
+
+              </ion-row>
+
+              <ion-button (click)="addObtido(nP,cP)" expand="full">
+                Novo Valor Obtido
+              </ion-button>
+
+              <ion-button (click)="calcula(nP,cP)" expand="full" color="success">
+                Calcular
+              </ion-button>
+
+            </div>
+
+          </ion-grid>
+        </ion-list>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="addPeca()"></ion-icon>
+    </ion-fab-button>
+    
+  </ion-fab>
 </ion-content>
