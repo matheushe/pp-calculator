@@ -7,69 +7,61 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<div class="ion-text-center" *ngIf="pecas.length <= 0">
-  <h2>Nenhuma peça cadastrada.</h2>
-  <h4>Clique no botão de mais e adicione ume peça para inciar o processo de calculos do CP, CPK,PP e PPK</h4>
-</div>
 
-  <div *ngFor="let peca of pecas; index as nP">   
+  <div>
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{nP + 1}} - {{peca.peca}}</ion-card-title>
-        <ion-card-subtitle>Informe as características</ion-card-subtitle>
+        <ion-card-title>Calcular Pp / Ppk</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Característica</ion-label>
+          <ion-input type="text" placeholder="Digite a Característica" [(ngModel)]="peca.desc"></ion-input>
+        </ion-item>
         <ion-list>
           <ion-grid fixed>
 
-            <div *ngFor="let carac of peca.carac; index as cP">
+            <div>
               <ion-row>
-                <ion-col size="12">
+                <ion-col size="6">
                   <ion-item>
-                    <ion-label position="floating">Característica N {{cP +1}}</ion-label>
-                    <ion-input type="text" [(ngModel)]="carac.desc"></ion-input>
+                    <ion-label position="floating">Limite Inferior</ion-label>
+                    <ion-input type="number" [(ngModel)]="peca.lmin"></ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-label position="floating">Limite Superior</ion-label>
+                    <ion-input type="number" [(ngModel)]="peca.lmax"></ion-input>
                   </ion-item>
                 </ion-col>
               </ion-row>
 
               <ion-row>
-                <ion-col size="4">
-                  <ion-item>
-                    <ion-label position="floating">l.Min</ion-label>
-                    <ion-input type="number" [(ngModel)]="carac.lmin"></ion-input>
-                  </ion-item>
-                </ion-col>
-
-                <ion-col size="4">
-                  <ion-item>
-                    <ion-label position="floating">l.Max</ion-label>
-                    <ion-input type="number" [(ngModel)]="carac.lmax"></ion-input>
-                  </ion-item>
-                </ion-col>
+                <ion-col size="12">Digite os Valores Obtidos</ion-col>
               </ion-row>
-
-              <ion-row *ngFor="let obtido of carac.obtido; index as oP" class="ion-align-items-center">
+              <ion-row *ngFor="let obtido of peca.obtido; index as oP" class="ion-align-items-center">
                 <ion-col size="10">
                   <ion-item>
-                    <ion-label position="floating">Obtido</ion-label>
                     <ion-input type="number" [(ngModel)]="obtido.valor"></ion-input>
                   </ion-item>
                 </ion-col>
 
                 <ion-col size="2">
-                  <ion-button color="danger" fill="outline" size="small" (click)="removeObtido(nP, cP, oP)">
+                  <ion-button color="danger" fill="outline" size="small" (click)="removeObtido(oP)">
                     <ion-icon name="trash"></ion-icon>
                   </ion-button>
                 </ion-col>
 
               </ion-row>
 
-              <ion-button (click)="addObtido(nP,cP)" expand="full">
+              <ion-button (click)="addObtido()" expand="full">
                 Novo Valor Obtido
               </ion-button>
 
-              <ion-button (click)="calcula(nP,cP)" expand="full" color="success">
+              <ion-button (click)="calcula()" expand="full" color="success">
                 Calcular
               </ion-button>
             </div>
@@ -79,38 +71,54 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- <ion-card> -->
     <ion-card *ngIf="result.resultado">
       <ion-card-header>
-        <ion-card-subtitle>Resultado</ion-card-subtitle>
-        <ion-card-title>PP / PPK</ion-card-title>
+        <ion-card-title>Resultado</ion-card-title>
+
       </ion-card-header>
       <ion-card-content>
 
         <div>
           <ion-grid fixed>
 
-            <ion-row color="primary">
-              <ion-col size="8">PP</ion-col>
-              <ion-col size="4">{{result.dados.pp}}</ion-col>
+            <ion-row class="rowCabecPPK">
+              <ion-col size="12">
+                <div>
+                  Pp / Ppk
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="rowResultPPK">
+              <ion-col size="12">
+                <div>
+                  {{result.dados.pp}} / {{result.dados.ppk}}
+
+                </div>
+
+              </ion-col>
+
             </ion-row>
 
             <ion-row>
-              <ion-col size="8">PP Min</ion-col>
+              <ion-col size="8">Pp Inferior</ion-col>
               <ion-col size="4">{{result.dados.ppmin}}</ion-col>
             </ion-row>
 
             <ion-row>
-              <ion-col size="8">PP Max</ion-col>
+              <ion-col size="8">Pp Superior</ion-col>
               <ion-col size="4">{{result.dados.ppmax}}</ion-col>
             </ion-row>
 
             <ion-row>
-              <ion-col size="8">PPK</ion-col>
-              <ion-col size="4">{{result.dados.ppk}}</ion-col>
+              <ion-col size="8">Tamanho da Amostra</ion-col>
+              <ion-col size="4">{{this.peca.obtido.length }}</ion-col>
             </ion-row>
 
+
             <ion-row>
-              <ion-col size="8">Média Valores Obtidos</ion-col>
+              <ion-col size="8">Média</ion-col>
               <ion-col size="4">{{result.dados.mediaObtidos}}</ion-col>
             </ion-row>
 
@@ -119,19 +127,19 @@
               <ion-col size="4">{{result.dados.desvio}}</ion-col>
             </ion-row>
 
-            
+
           </ion-grid>
         </div>
-        
-        
+
+
       </ion-card-content>
     </ion-card>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="add" (click)="addPeca()"></ion-icon>
     </ion-fab-button>
     
-  </ion-fab>
+  </ion-fab> -->
 </ion-content>

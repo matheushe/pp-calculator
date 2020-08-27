@@ -1,30 +1,28 @@
 import { Component } from "@angular/core";
 import { AlertController } from "@ionic/angular";
-
+import { ToastController } from "@ionic/angular";
 @Component({
   selector: "app-tab1",
   templateUrl: "tab1.page.html",
   styleUrls: ["tab1.page.scss"],
 })
 export class Tab1Page {
-  public pecas: any = [];
+  public peca: any = { desc: "", lmin: null, lmax: null, obtido: [] };
   public result: any = { resultado: false, dados: {} };
-  constructor(private alertController: AlertController) { }
 
-  public addCarac(index) {
-    let novo = { desc: "", lmin: 0, lmax: 0, obtido: [{ valor: 0 }] };
+  constructor(
+    private alertController: AlertController,
+    private toast: ToastController
+  ) {}
 
-    this.pecas[index].carac.push(novo);
-  }
-
-  async addPeca() {
-    const alert = await this.alertController.create({
-      header: "Adicionar Peça",
+  async addObtido() {
+    let alert = await this.alertController.create({
+      header: "Valor Obtido",
       inputs: [
         {
-          name: "nomePeca",
-          type: "text",
-          placeholder: "Digite o Nome da Peça",
+          name: "valor",
+          type: "number",
+          placeholder: "Digite o valor obtido",
         },
       ],
       buttons: [
@@ -36,13 +34,7 @@ export class Tab1Page {
         {
           text: "Adicionar",
           handler: (value) => {
-            let novo = {
-              peca: value.nomePeca,
-              carac: [{ desc: "", lmin: 0, lmax: 0, obtido: [{ valor: 0 }] }],
-            };
-
-            this.pecas.push(novo);
-            // console.log(this.pecas);
+            this.peca.obtido.push({ valor: parseFloat(value.valor) });
           },
         },
       ],
@@ -51,60 +43,73 @@ export class Tab1Page {
     await alert.present();
   }
 
-  addObtido(peca, carac) {
-    // console.log(this.pecas[peca]);
-
-    this.pecas[peca].carac[carac]["obtido"].push({ valor: 0 });
+  removeObtido(index) {
+    this.peca.obtido.splice(index, 1);
   }
 
-  removeObtido(peca, carac, index) {
-    // console.log(peca);
-    // console.log(carac);
-    // console.log(index);
+  async validaDados() {
+    if (this.peca.lmin == null || this.peca.lmin == null) {
+      let error = await this.toast.create({
+        message:
+          "Por favor verifique os valores de limite inferior e limite superior",
+        duration: 2000,
+        color: "danger",
+      });
 
-    console.log(this.pecas[peca].carac[carac].obtido[index]);
+      error.present();
+      return false;
+    } else if (this.peca.obtido.length <= 2) {
+      let error = await this.toast.create({
+        message:
+          "Por favor informe pelo menos 3 valores para continuar com o calculo",
+        duration: 2000,
+        color: "danger",
+      });
 
-    this.pecas[peca].carac[carac].obtido.splice(index, 1);
+      error.present();
+      return false;
+    }
+
+    return true;
   }
 
-  calcula(peca, carac) {
+  async calcula() {
+    if (await this.validaDados()) {
 
-    let obtidos = this.converteObtidos(this.pecas[peca].carac[carac].obtido);
-    let variancia = this.calculaVariancia(this.pecas[peca].carac[carac].obtido);
+      let obtidos = this.converteObtidos(this.peca.obtido);
+      let variancia = this.calculaVariancia(this.peca.obtido);
 
-    let mediaObtidos = this.calculaMedia(obtidos);
-    let mediaVaria = this.calculaMedia(variancia);
-    let desvio = this.calculaDesvioPadrao(obtidos);
+      let mediaObtidos = this.calculaMedia(obtidos);
+      let mediaVaria = this.calculaMedia(variancia);
+      let desvio = this.calculaDesvioPadrao(obtidos);
 
-    let pp = this.calculaPP(this.pecas[peca].carac[carac].lmax, this.pecas[peca].carac[carac].lmin, desvio);
-    let ppmin = this.calculaPPMin(this.pecas[peca].carac[carac].lmax, mediaObtidos, desvio);
-    let ppmax = this.calculaPPMax(this.pecas[peca].carac[carac].lmin, mediaObtidos, desvio);
+      let pp = this.calculaPP(this.peca.lmax, this.peca.lmin, desvio);
+      let ppmin = this.calculaPPMin(this.peca.lmax, mediaObtidos, desvio);
+      let ppmax = this.calculaPPMax(this.peca.lmin, mediaObtidos, desvio);
 
-    let ppk = this.calculaPPK(ppmin, ppmax);
+      let ppk = this.calculaPPK(ppmin, ppmax);
 
-    // console.log("Media Obtido " + mediaObtidos);
-    // console.log("Desvio Padrao " + desvio);
-    // console.log("Media Variancia " + mediaVaria);
+      this.result = {
+        resultado: true,
+        dados: {
+          mediaObtidos: Math.round((mediaObtidos + Number.EPSILON) * 100) / 100,
+          desvio: Math.round((desvio + Number.EPSILON) * 100) / 100,
+          mediaVariancia: Math.round((mediaVaria + Number.EPSILON) * 100) / 100,
+          pp: Math.round((pp + Number.EPSILON) * 100) / 100,
+          ppmin: Math.round((ppmin + Number.EPSILON) * 100) / 100,
+          ppmax: Math.round((ppmax + Number.EPSILON) * 100) / 100,
+          ppk: Math.round((ppk + Number.EPSILON) * 100) / 100,
+        },
+	  };
+	  
+	  let fim = await this.toast.create({
+        message:
+          "Calculado com Sucesso!",
+        duration: 2000,
+        color: "success",
+      });
 
-    // console.log('********** PP **********');
-    // console.log("PP " + pp);
-    // console.log("PP Min " + ppmin);
-    // console.log("PP Max " + ppmax);
-    // console.log('---------- PP ----------');
-    // console.log('********** PPK **********');
-    // console.log("PPK " + ppk);
-    // console.log('---------- PPK ----------');
-
-    this.result = {
-      resultado: true, dados: {
-        mediaObtidos: (Math.round((mediaObtidos + Number.EPSILON) * 100) / 100),
-        desvio: (Math.round((desvio + Number.EPSILON) * 100) / 100),
-        mediaVariancia: (Math.round((mediaVaria + Number.EPSILON) * 100) / 100),
-        pp: (Math.round((pp + Number.EPSILON) * 100) / 100),
-        ppmin: (Math.round((ppmin + Number.EPSILON) * 100) / 100),
-        ppmax: (Math.round((ppmax + Number.EPSILON) * 100) / 100),
-        ppk: (Math.round((ppk + Number.EPSILON) * 100) / 100)
-      }
+      fim.present();
     }
   }
 
@@ -153,17 +158,17 @@ export class Tab1Page {
   }
 
   calculaPP(lmax, lmin, desvio) {
-    let calculo = ((lmax - lmin) / (6 * desvio));
+    let calculo = (lmax - lmin) / (6 * desvio);
     return Math.abs(calculo);
   }
 
   calculaPPMin(lmax, media, desvio) {
-    let calculo = ((lmax - media) / (3 * desvio));
+    let calculo = (lmax - media) / (3 * desvio);
     return Math.abs(calculo);
   }
 
   calculaPPMax(lmin, media, desvio) {
-    let calculo = ((lmin - media) / (3 * desvio));
+    let calculo = (lmin - media) / (3 * desvio);
     return Math.abs(calculo);
   }
 

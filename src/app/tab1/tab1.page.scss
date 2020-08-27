@@ -1,0 +1,30 @@
+// Cabecalho
+.rowCabecPPK {
+  border: 1px solid;
+  border-color: #ffcc80;
+  border-bottom: none;
+  background-color: #ffcc80;
+}
+
+.rowCabecPPK div {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+// Resultado
+.rowResultPPK {
+  border: 1px solid;
+  border-color: #ffcc80;
+  background-color: #ffe0b2;
+}
+
+.rowResultPPK {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  padding: 3px 3px 10px 3px;
+  margin-bottom: 15px;
+//   color: #0000;
+}
