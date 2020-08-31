@@ -1,13 +1,18 @@
 import { Component } from "@angular/core";
-import { AlertController } from "@ionic/angular";
-import { ToastController } from "@ionic/angular";
+import { AlertController, ToastController } from "@ionic/angular";
 @Component({
   selector: "app-tab1",
   templateUrl: "tab1.page.html",
   styleUrls: ["tab1.page.scss"],
 })
 export class Tab1Page {
-  public peca: any = { desc: "", lmin: null, lmax: null, obtido: [] };
+  public peca: any = {
+    peca: "Peça",
+    desc: "",
+    lmin: null,
+    lmax: null,
+    obtido: [],
+  };
   public result: any = { resultado: false, dados: {} };
 
   constructor(
@@ -73,9 +78,38 @@ export class Tab1Page {
     return true;
   }
 
+  async alteraPeca() {
+    let alert = await this.alertController.create({
+      header: "Descrição da Peça",
+      inputs: [
+        {
+          name: "peca",
+          type: "text",
+          placeholder: "Digite o nome da peça",
+        },
+      ],
+      buttons: [
+        {
+          text: "Cancelar",
+          role: "cancel",
+          cssClass: "secondary",
+        },
+        {
+          text: "Salvar",
+          handler: (value) => {
+            if (value.peca != "") {
+              this.peca.peca = value.peca;
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   async calcula() {
     if (await this.validaDados()) {
-
       let obtidos = this.converteObtidos(this.peca.obtido);
       let variancia = this.calculaVariancia(this.peca.obtido);
 
@@ -100,11 +134,10 @@ export class Tab1Page {
           ppmax: Math.round((ppmax + Number.EPSILON) * 100) / 100,
           ppk: Math.round((ppk + Number.EPSILON) * 100) / 100,
         },
-	  };
-	  
-	  let fim = await this.toast.create({
-        message:
-          "Calculado com Sucesso!",
+      };
+
+      let fim = await this.toast.create({
+        message: "Calculado com Sucesso!",
         duration: 2000,
         color: "success",
       });
