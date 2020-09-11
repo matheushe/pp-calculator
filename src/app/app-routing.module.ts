@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NgxElectronModule } from 'ngx-electron';
+// import { NgxElectronModule } from 'ngx-electron';
 const routes: Routes = [
   {
     path: '',
@@ -9,7 +9,6 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [
-    NgxElectronModule,
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]

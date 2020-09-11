@@ -1,18 +1,18 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="toolbarBackground">
     <ion-title>
-      Calculadora
+      Inserir Dados
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
-  <div>
-    <ion-card>
+<ion-content [fullscreen]="true" class="background">
+  <div >
+    <ion-card >
       <ion-card-header>
         <ion-card-title>Calcular Pp / Ppk</ion-card-title>
-        <ion-card-subtitle (click)="alteraPeca()" >{{peca.peca}} <ion-icon name="create-outline"></ion-icon> </ion-card-subtitle>
+        <ion-card-subtitle (click)="alteraPeca()">{{peca.peca}} <ion-icon name="create-outline"></ion-icon>
+        </ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
@@ -95,11 +95,8 @@
               <ion-col size="12">
                 <div>
                   {{result.dados.pp}} / {{result.dados.ppk}}
-
                 </div>
-
               </ion-col>
-
             </ion-row>
 
             <ion-row>
@@ -117,7 +114,6 @@
               <ion-col size="4">{{this.peca.obtido.length }}</ion-col>
             </ion-row>
 
-
             <ion-row>
               <ion-col size="8">Média</ion-col>
               <ion-col size="4">{{result.dados.mediaObtidos}}</ion-col>
@@ -128,19 +124,10 @@
               <ion-col size="4">{{result.dados.desvio}}</ion-col>
             </ion-row>
 
-
           </ion-grid>
+          <div class="lnc">LNC - Limite não calculado</div>
         </div>
-
-
       </ion-card-content>
     </ion-card>
   </div>
-
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add" (click)="addPeca()"></ion-icon>
-    </ion-fab-button>
-    
-  </ion-fab> -->
 </ion-content>

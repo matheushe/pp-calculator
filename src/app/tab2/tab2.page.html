@@ -1,17 +1,24 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Gráfico
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="conteudo">
 
-<ion-content [fullscreen]="true">
-  <div class="ion-text-center">
-    <h2>Nenhum resultado.</h2>
-    <h4>Retorne a aba de dados para inserir os dados para inciar o processo de calculos do CP, CPK,PP e PPK</h4>
-  </div>
+  <ng-container *ngIf="!dadosCalculo.calculo">
+    <div class="ion-text-center">
+      <h2>Nenhum resultado.</h2>
+      <h4>Retorne a aba de dados para inserir os dados para inciar o processo de calculos do CP, CPK,PP e PPK</h4>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="dadosCalculo.calculo">
+    <h6 class="ion-text-center">Carta 1</h6>
+    <div class="divGraph">
+      <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"></canvas>
+    </div>
+
+    <h6 class="ion-text-center">Carta 2</h6>
+
+    <div class="divGraph">
+      <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"></canvas>
+    </div>
+  </ng-container>
 
 
-  <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"></canvas>
 </ion-content>
