@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="background">
-  <div >
-    <ion-card >
+  <div>
+    <ion-card>
       <ion-card-header>
         <ion-card-title>Calcular Pp / Ppk</ion-card-title>
         <ion-card-subtitle (click)="alteraPeca()">{{peca.peca}} <ion-icon name="create-outline"></ion-icon>
@@ -73,9 +73,10 @@
     </ion-card>
 
     <!-- <ion-card> -->
-    <ion-card *ngIf="result.resultado">
+    <ion-card *ngIf="resultado.resultado">
       <ion-card-header>
         <ion-card-title>Resultado</ion-card-title>
+        <ion-card-subtitle>{{peca.peca}} <span *ngIf="peca.desc"> - {{peca.desc}}</span> </ion-card-subtitle>
 
       </ion-card-header>
       <ion-card-content>
@@ -94,19 +95,19 @@
             <ion-row class="rowResultPPK">
               <ion-col size="12">
                 <div>
-                  {{result.dados.pp}} / {{result.dados.ppk}}
+                  {{resultado.dados.resultado.pp}} / {{resultado.dados.resultado.ppk}}
                 </div>
               </ion-col>
             </ion-row>
 
             <ion-row>
               <ion-col size="8">Pp Inferior</ion-col>
-              <ion-col size="4">{{result.dados.ppmin}}</ion-col>
+              <ion-col size="4">{{resultado.dados.resultado.ppmin}}</ion-col>
             </ion-row>
 
             <ion-row>
               <ion-col size="8">Pp Superior</ion-col>
-              <ion-col size="4">{{result.dados.ppmax}}</ion-col>
+              <ion-col size="4">{{resultado.dados.resultado.ppmax}}</ion-col>
             </ion-row>
 
             <ion-row>
@@ -116,16 +117,16 @@
 
             <ion-row>
               <ion-col size="8">Média</ion-col>
-              <ion-col size="4">{{result.dados.mediaObtidos}}</ion-col>
+              <ion-col size="4">{{resultado.dados.dados.mediaObtidos}}</ion-col>
             </ion-row>
 
             <ion-row>
               <ion-col size="8">Desvio Padrão</ion-col>
-              <ion-col size="4">{{result.dados.desvio}}</ion-col>
+              <ion-col size="4">{{resultado.dados.dados.desvio}}</ion-col>
             </ion-row>
 
           </ion-grid>
-          <div class="lnc">LNC - Limite não calculado</div>
+          <div class="lnc" *ngIf="resultado.dados.resultado.ppmax == '*' || resultado.dados.resultado.ppmin == '*'">* Não calculado</div>
         </div>
       </ion-card-content>
     </ion-card>

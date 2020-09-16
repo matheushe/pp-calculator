@@ -8,17 +8,83 @@
   </ng-container>
 
   <ng-container *ngIf="dadosCalculo.calculo">
-    <h6 class="ion-text-center">Carta 1</h6>
-    <div class="divGraph">
-      <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"></canvas>
-    </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resultado</ion-card-title>
+        <ion-card-subtitle>{{dadosCalculo.detalhes.peca}} <span *ngIf="dadosCalculo.detalhes.desc"> -
+            {{dadosCalculo.detalhes.desc}}</span> </ion-card-subtitle>
 
-    <h6 class="ion-text-center">Carta 2</h6>
+      </ion-card-header>
+      <ion-card-content>
 
-    <div class="divGraph">
-      <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"></canvas>
-    </div>
+        <ion-grid fixed>
+          <ion-row class="rowCabecPPK">
+            <ion-col size="12">
+              <div>
+                Pp / Ppk
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="rowResultPPK">
+            <ion-col size="12">
+              <div>
+                {{dadosCalculo.resultados.dados.resultado.pp}} / {{dadosCalculo.resultados.dados.resultado.ppk}}
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="8">Pp Inferior</ion-col>
+            <ion-col size="4">{{dadosCalculo.resultados.dados.resultado.ppmin}}</ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="8">Pp Superior</ion-col>
+            <ion-col size="4">{{dadosCalculo.resultados.dados.resultado.ppmax}}</ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="8">Tamanho da Amostra</ion-col>
+            <ion-col size="4">{{dadosCalculo.obtidos.length }}</ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="8">Média</ion-col>
+            <ion-col size="4">{{dadosCalculo.resultados.dados.dados.mediaObtidos}}</ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="8">Desvio Padrão</ion-col>
+            <ion-col size="4">{{dadosCalculo.resultados.dados.dados.desvio}}</ion-col>
+          </ion-row>
+
+        </ion-grid>
+        <div class="lnc"
+          *ngIf="dadosCalculo.resultados.dados.resultado.ppmax == '*' || dadosCalculo.resultados.dados.resultado.ppmin == '*'">
+          * Não calculado
+        </div>
+      </ion-card-content>
+    </ion-card>
   </ng-container>
 
+  <ng-container *ngIf="dadosCalculo.calculo">
+
+    <ion-card>
+        <ion-card-content>
+          <h2 class="ion-text-center">Carta X</h2>
+          <canvas baseChart [datasets]="cartaX" [chartType]="chartType" [labels]="labelsX"></canvas>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-content>
+          <h2 class="ion-text-center">Carta AM</h2>
+
+          <canvas baseChart [datasets]="cartaAM" [chartType]="chartType" [labels]="labelsAM"></canvas>
+
+        </ion-card-content>
+      </ion-card>
+  </ng-container>
 
 </ion-content>
